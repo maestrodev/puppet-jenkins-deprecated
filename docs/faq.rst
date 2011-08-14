@@ -26,4 +26,4 @@ What is puppet?
 ---------------
 
 An awesome tool for managing loads of servers in a reusable fashion. Check out
-`their website <http://www.puppetlabs.com/>`_.
+`their website <http://jenkins-ci.org/>`_.
