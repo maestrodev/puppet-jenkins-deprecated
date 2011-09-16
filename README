@@ -1,3 +1,5 @@
+NOTE: This is a fork to provide support for RHEL/CentOS (yum) platforms.
+
 puppet-
        _            _    _
       (_) ___ _ __ | | _(_)_ __  ___
@@ -12,7 +14,8 @@ A puppet module that manages the Jenkins CI server.
 Purpose
 =======
 
-This module installs and manages jenkins on ubuntu servers.
+This module installs and manages jenkins on RHEL/CentOS servers.  This is a
+fork of git://github.com/rdegges/puppet-jenkins.git - see License below.
 
 Docs
 ====

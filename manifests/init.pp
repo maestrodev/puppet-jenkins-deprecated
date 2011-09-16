@@ -10,33 +10,39 @@
 #
 class jenkins {
 
-    $key_url = "http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
-    $repo_url = "deb http://pkg.jenkins-ci.org/debian binary/"
-    $apt_sources = "/etc/apt/sources.list"
+    $key_url = "http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key"
+    $repo_url = "http://pkg.jenkins-ci.org/redhat"
+    $yum_repo = "/etc/yum.repos.d/jenkins.repo"
 
-    exec { "install jenkins key":
-        command     => "wget -q -O - ${key_url} | apt-key add -; echo '${repo_url}' >> ${apt_sources}",
-        onlyif      => "grep -Fvxq '${repo_url}' ${apt_sources}",
-        path        => ["/bin", "/usr/bin"],
-    }
-
-    exec { "jenkins-apt-update":
-        command => "/usr/bin/aptitude -y update",
-        require => Exec["install jenkins key"],
+    yumrepo { "jenkins":
+        baseurl     => $repo_url,
+        descr       => "Jenkins Yum Repo",
+        enabled     => 1,
+        gpgkey      => $key_url,
+        gpgcheck    => 1
     }
 
     package { "jenkins":
         ensure      => present,
-        provider    => "aptitude",
-        require     => Exec["jenkins-apt-update"],
+        provider    => "yum",
+        require     => Yumrepo["jenkins"]
     }
+
+    file { "/etc/sysconfig/jenkins":
+        owner       => root,
+        group       => root,
+        mode        => 755,
+        content     => template("jenkins/jenkins.erb"),
+        require    => Package["jenkins"],
+        notify      => Service["jenkins"]
+    } 
 
     service { "jenkins":
         enable      => true,
         ensure      => running,
         hasrestart  => true,
         hasstatus   => true,
-        require     => Package["jenkins"],
+        require     => [Package["jenkins"],File["/etc/sysconfig/jenkins"]]
     }
 
 }
