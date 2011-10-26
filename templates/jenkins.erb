@@ -26,7 +26,11 @@ JENKINS_JAVA_CMD=""
 # Be careful when you change this, as you need to update
 # permissions of $JENKINS_HOME and /var/log/jenkins.
 #
-JENKINS_USER="jenkins"
+<% if has_variable?("jenkins_user") then %>
+	JENKINS_USER="<%= jenkins_user %>"
+<% else %>
+	JENKINS_USER="jenkins"
+<% end %>		
 
 ## Type:        string
 ## Default:     "-Djava.awt.headless=true"
