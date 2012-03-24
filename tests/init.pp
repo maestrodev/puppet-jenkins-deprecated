@@ -1,3 +1,4 @@
-$jenkins_port = "8181"
+class { 'jenkins':
+  jenkins_port => '8181',
+}
 
-include jenkins
