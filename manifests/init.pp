@@ -8,7 +8,10 @@
 #   # Install and run jenkins.
 #   include jenkins
 #
-class jenkins($jenkins_user = 'jenkins', $jenkins_port = '8181') {
+class jenkins(
+  $jenkins_user = 'jenkins',
+  $jenkins_port = '8181',
+  $jenkins_prefix = undef) {
 
     $key_url = "http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key"
     $repo_url = "http://pkg.jenkins-ci.org/redhat"
