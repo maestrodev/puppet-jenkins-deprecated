@@ -13,6 +13,10 @@ class jenkins(
   $jenkins_port = '8181',
   $jenkins_prefix = undef) {
 
+    if $jenkins_prefix != undef {
+      $prefix_real = $jenkins_prefix
+    }
+
     $key_url = "http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key"
     $repo_url = "http://pkg.jenkins-ci.org/redhat"
     $yum_repo = "/etc/yum.repos.d/jenkins.repo"

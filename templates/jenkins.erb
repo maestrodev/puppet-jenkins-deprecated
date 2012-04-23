@@ -103,8 +103,8 @@ JENKINS_HANDLER_IDLE="20"
 # Pass arbitrary arguments to Jenkins.
 # Full option list: java -jar jenkins.war --help
 #
-<% if has_variable?("jenkins_prefix") then -%>
-JENKINS_ARGS="--prefix=<%= jenkins_prefix %>"
+<% if has_variable?("prefix_real") then -%>
+JENKINS_ARGS="--prefix=<%= prefix_real %>"
 <% else -%>
 JENKINS_ARGS=""
 <% end -%>
