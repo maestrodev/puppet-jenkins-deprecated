@@ -11,7 +11,8 @@
 class jenkins(
   $jenkins_user = 'jenkins',
   $jenkins_port = '8181',
-  $jenkins_prefix = undef) {
+  $jenkins_prefix = undef,
+  $version = 'present') {
 
     if $jenkins_prefix != undef {
       $prefix_real = $jenkins_prefix
@@ -30,7 +31,7 @@ class jenkins(
     }
 
     package { "jenkins":
-        ensure      => present,
+        ensure      => $version,
         provider    => "yum",
         require     => Yumrepo["jenkins"]
     }
