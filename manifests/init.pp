@@ -36,6 +36,9 @@ class jenkins(
         require     => Yumrepo["jenkins"]
     }
 
+    if ! defined(Package['fontconfig'])           { package { 'fontconfig':             ensure => installed } }
+    if ! defined(Package['fontconfig-devel'])     { package { 'fontconfig-devel':             ensure => installed } }
+
     file { "/etc/sysconfig/jenkins":
         owner       => root,
         group       => root,
