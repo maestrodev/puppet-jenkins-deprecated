@@ -34,10 +34,20 @@ class jenkins(
         ensure      => $version,
         provider    => "yum",
         require     => Yumrepo["jenkins"]
+    } ->
+    file  { "/var/log/jenkins":
+      ensure => directory,
+      owner => $jenkins_user,
+      group => $jenkins_user,
+      mode => 755,
     }
 
     if ! defined(Package['fontconfig'])           { package { 'fontconfig':             ensure => installed } }
     if ! defined(Package['fontconfig-devel'])     { package { 'fontconfig-devel':             ensure => installed } }
+
+    package { [ "dejavu-sans-fonts", "dejavu-sans-mono-fonts", "dejavu-serif-fonts"]: 
+      ensure => installed,
+    }
 
     file { "/etc/sysconfig/jenkins":
         owner       => root,
@@ -47,6 +57,8 @@ class jenkins(
         require    => Package["jenkins"],
         notify      => Service["jenkins"]
     } 
+    
+    
 
     service { "jenkins":
         enable      => true,
