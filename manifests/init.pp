@@ -42,11 +42,13 @@ class jenkins(
       mode => 755,
     }
 
-    if ! defined(Package['fontconfig'])           { package { 'fontconfig':             ensure => installed } }
-    if ! defined(Package['fontconfig-devel'])     { package { 'fontconfig-devel':             ensure => installed } }
+    if ! defined(Package['fontconfig'])       { package { 'fontconfig':       ensure => installed } }
+    if ! defined(Package['fontconfig-devel']) { package { 'fontconfig-devel': ensure => installed } }
 
-    package { [ "dejavu-sans-fonts", "dejavu-sans-mono-fonts", "dejavu-serif-fonts"]: 
-      ensure => installed,
+    if $::operatingsystem == 'CentOS' and $::operatingsystemrelease >= 6 {
+      package { [ "dejavu-sans-fonts", "dejavu-sans-mono-fonts", "dejavu-serif-fonts"]: 
+        ensure => installed,
+      }
     }
 
     file { "/etc/sysconfig/jenkins":
@@ -57,8 +59,6 @@ class jenkins(
         require    => Package["jenkins"],
         notify      => Service["jenkins"]
     } 
-    
-    
 
     service { "jenkins":
         enable      => true,
