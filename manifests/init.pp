@@ -10,6 +10,7 @@
 #
 class jenkins(
   $jenkins_user = 'jenkins',
+  $jenkins_group = 'jenkins',
   $jenkins_port = '8181',
   $jenkins_prefix = undef,
   $version = 'present') {
@@ -38,8 +39,20 @@ class jenkins(
     file  { "/var/log/jenkins":
       ensure => directory,
       owner => $jenkins_user,
-      group => $jenkins_user,
+      group => $jenkins_group,
       mode => 755,
+    }->
+    file { '/var/cache/jenkins':
+        ensure => directory,
+        owner => $jenkins_user,
+        group => $jenkins_group,
+        mode  => 755,
+    } ->
+    file { '/var/lib/jenkins':
+            ensure => directory,
+            owner => $jenkins_user,
+            group => $jenkins_group,
+            mode  => 755,
     }
 
     if ! defined(Package['fontconfig'])       { package { 'fontconfig':       ensure => installed } }
