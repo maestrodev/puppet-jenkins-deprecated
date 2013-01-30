@@ -1,5 +1,5 @@
 name 'maestrodev-jenkins'
-version '1.0.1'
+version '1.0.2'
 
 summary 'A puppet module for installing Jenkins'
 author 'maestrodev & Randall Degges'
