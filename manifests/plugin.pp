@@ -32,16 +32,16 @@ define jenkins::plugin($version=0) {
     }
   }
 
-  if (!defined(Group['jenkins'])) {
+  if (!defined(Group[$group])) {
     group {
-      'jenkins' :
+      $group :
         ensure => present;
     }
   }
 
-  if (!defined(User['jenkins'])) {
+  if (!defined(User[$user])) {
     user {
-      'jenkins' :
+      $user :
         ensure => present;
     }
   }
@@ -52,7 +52,7 @@ define jenkins::plugin($version=0) {
       cwd      => $plugin_dir,
       require  => File[$plugin_dir],
       path     => ['/usr/bin', '/usr/sbin',],
-      user     => 'jenkins',
+      user     => $user,
       unless   => "test -f ${plugin_dir}/${plugin}",
       notify   => Service['jenkins'];
   }

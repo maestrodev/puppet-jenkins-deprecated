@@ -1,7 +1,9 @@
-define jenkins::plugin::install($version=0) {
-  $plugin     = "${name}.hpi"
+define jenkins::plugin::install($version = 0) {
+  $user              = $jenkins::jenkins_user
+  $group             = $jenkins::jenkins_group
+  $plugin            = "${name}.hpi"
   $plugin_parent_dir = '/var/lib/jenkins'
-  $plugin_dir = '/var/lib/jenkins/plugins'
+  $plugin_dir        = '/var/lib/jenkins/plugins'
 
   if ($version != 0) {
     $base_url = "http://updates.jenkins-ci.org/download/plugins/${name}/${version}/"
@@ -14,22 +16,22 @@ define jenkins::plugin::install($version=0) {
     file {
       [$plugin_parent_dir, $plugin_dir]:
         ensure => directory,
-        owner  => 'jenkins',
-        group  => 'jenkins';
+        owner  => $user,
+        group  => $group;
     }
   }
 
-  if (!defined(Group['jenkins'])) {
+  if (!defined(Group[$group])) {
     group {
-      'jenkins' :
+      $group :
         ensure => present;
     }
   }
-  if (!defined(User['jenkins'])) {
+  if (!defined(User[$user])) {
     user {
-      'jenkins' :
+      $user :
         ensure => present,
-        gid    => 'jenkins';
+        gid    => $group;
     }
   }
 
@@ -39,7 +41,7 @@ define jenkins::plugin::install($version=0) {
       cwd      => $plugin_dir,
       require  => File[$plugin_dir],
       path     => ['/usr/bin', '/usr/sbin',],
-      user     => 'jenkins',
+      user     => $user,
       unless   => "test -f ${plugin_dir}/${plugin}",
       notify   => Service['jenkins'];
   }
