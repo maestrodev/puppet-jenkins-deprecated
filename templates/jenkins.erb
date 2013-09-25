@@ -38,7 +38,11 @@ JENKINS_JAVA_CMD=""
 #
 # Options to pass to java when running Jenkins.
 #
+<%- if has_variable?("java_options_real") then %>
+JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true <%= java_options_real %>"
+<%- else -%>
 JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true"
+<% end -%>
 
 ## Type:        integer(0:65535)
 ## Default:     8080

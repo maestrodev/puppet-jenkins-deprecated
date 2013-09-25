@@ -16,4 +16,22 @@ describe 'jenkins' do
     } }
     it { should contain_package('dejavu-sans-fonts') }
   end
+
+  context "No jenkins_java_options" do
+    it "should have default options" do
+      should contain_file('/etc/sysconfig/jenkins').with_content(
+        %r[JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true"])
+    end
+  end
+
+  context "With jenkins_java_options" do
+    let(:params) { {
+      :jenkins_java_options => '-Dhudson.model.UpdateCenter.never=true -Dhudson.model.DownloadService.never=true'
+    } }
+    it "should have default and custom options" do
+      should contain_file('/etc/sysconfig/jenkins').with_content(
+        %r[JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Dhudson.model.UpdateCenter.never=true -Dhudson.model.DownloadService.never=true"]
+      )
+    end
+  end
 end

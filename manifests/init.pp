@@ -13,10 +13,15 @@ class jenkins(
   $jenkins_group = 'jenkins',
   $jenkins_port = '8181',
   $jenkins_prefix = undef,
+  $jenkins_java_options = undef,
   $version = 'present') {
 
     if $jenkins_prefix != undef {
       $prefix_real = $jenkins_prefix
+    }
+
+    if $jenkins_java_options != undef {
+      $java_options_real = $jenkins_java_options
     }
 
     $key_url = "http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key"
